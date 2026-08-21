@@ -1,0 +1,37 @@
+[workspace]
+authors = ["Oliverio Starosta <oliveriostarosta@gmail.com>"]
+channels = ["conda-forge"]
+name = "simbio-tutorial"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+numpy = ">=2.4.2"
+matplotlib = "*"
+ipykernel = "*"
+ipywidgets = "*"
+marimo = ">=0.20.2"
+pyzmq = ">=27.1.0"
+seaborn = "*"
+
+# [feature.pypi.pypi-dependencies]
+# rebop = "*"
+# symbolite = ">=1.1.0"
+# poincare = ">=1.1.2"
+# simbio = ">= 1.0.1"
+# jablonski = ">= 0.3.1"
+
+
+[pypi-dependencies]
+rebop = "*"
+symbolite = { path = "../u2602/symbolite", editable = true }
+poincare = { path = "../u2602/poincare", editable = true }
+simbio = { path = "../u2602/simbio", editable = true }
+jablonski = { path = "../u2602/jablonski", editable = true }
+
+
+[tasks.open]
+args = [{ "arg" = "path", "default" = "" }]
+cmd = "marimo edit --no-sandbox {{path}}"
