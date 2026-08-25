@@ -180,6 +180,14 @@ def _(DampedOscillator, Simulator, np):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
+    ## Something with transform?
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
     ## Excercises
     **1)** Lets bring this a little closer to biology. Declare and simulate the classic LoktaVolterra predator-prey model:
 
