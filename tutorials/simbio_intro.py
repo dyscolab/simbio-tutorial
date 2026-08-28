@@ -244,7 +244,7 @@ def _(MassAction, System, Variable, initial, pint, u):
             O2: Variable = initial(default = 1 * u.mol)
             CO2: Variable = initial(default = 0 * u.mmol/u.L)
             H2O: Variable = initial(default = 0 * u.mol/u.L)
-    
+
             combustion = MassAction(reactants = [CH4, 2 * O2], products = [CO2, 2* H2O], rate = 1 * u.mol/u.L/u.s * (u.mol/u.L)**-3)
     except pint.PintError as err:
         print("PintError:", err)
@@ -312,7 +312,13 @@ def _():
     mo.md(r"""
     ## Excercises
 
-    **1)** Reactions can be
+    **1)** Rates can depend on other variables and paremeters. Make a simple system with variables $A, B, C$ with reactions:
+
+    $$ \begin{align} 2A &\rightarrow B \\
+    C &\rightarrow \empty
+    \end{align} $$
+
+    where the $2A \rightarrow B$ rate depends on a temperature parameter $T$ and the amount of catalizer $C$.
 
     **2)** Combustion needs a fuel source. Create a `System` `SustainedCombustion` which includes a `Combustion` subsystem and a constant source of `CH4` and `O2` using the `Creation` inbuilt reaction.
     """)

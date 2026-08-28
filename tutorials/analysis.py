@@ -20,7 +20,7 @@ async with app.setup(hide_code=True):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Analysis tools
+    # Larger systems and analysis tools
     Poincare and SimBio contain a series of analysis, including parameter sweeps searching for steady states and oscillations. Before anything we need a more instersting example, so we will implement the the [repressilator](https://en.wikipedia.org/wiki/Repressilator).
     """)
     return
@@ -303,8 +303,12 @@ def _(result_2):
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(r"""
+    mo.md(rf"""
     # Excercises
+
+    **1)** The `Repressilator` class defines all variables externally and passes them to the subsystems. Since a instanced subclass createa their own variables and parameters if not passed externally this isn't necessary, although must be carefull to not create our variables twice. Make a more character efficient implementation of the repressilator by creating the proteins without external variables and then passing the internal variables created there to the mRNAs.
+
+    **2)** Run another parameter sweep for oscillatios but this time in $\alpha$ between 50 and 200. If we don't know in what range the periods and relaxaton times will be it is generally a reasonable first guess to assume it is monotonous in our parameter, so get an estimate by simulating at the maximum and minimum $\alpha$ and eyeballing a period and relaxation time.
     """)
     return
 
