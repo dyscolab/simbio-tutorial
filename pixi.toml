@@ -2,7 +2,7 @@
 authors = ["Oliverio Starosta <oliveriostarosta@gmail.com>"]
 channels = ["conda-forge"]
 name = "simbio-tutorial"
-platforms = ["linux-64"]
+platforms = ["linux-64", "osx-arm64", "win-64"]
 version = "0.1.0"
 
 [tasks]
@@ -30,7 +30,6 @@ symbolite = { path = "../u2602/symbolite", editable = true }
 poincare = { path = "../u2602/poincare", editable = true }
 simbio = { path = "../u2602/simbio", editable = true }
 jablonski = { path = "../u2602/jablonski", editable = true }
-
 
 [tasks.open]
 args = [{ "arg" = "path", "default" = "" }]
