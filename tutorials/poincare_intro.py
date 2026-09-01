@@ -163,7 +163,13 @@ def _(Oscillator, Parameter, System, assign):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Instancing `Oscillator` adds all variables, parameters and equations to the outer system; passing `v = 0` when instancing changes the default initial conditon for `osc.v`. Inner variables or parameters can be accesed as attributes with osc.(variable) syntax. This extends to simulation:
+    Instancing `Oscillator` adds all variables, parameters and equations to the outer system; passing `v = 0` when instancing changes the default initial conditon for `osc.v`. Inner variables or parameters can be accesed as attributes with osc.(variable) syntax. The new equation we declare will be added to the one we already declared inside of `Oscillator`, so the total equation woud be
+
+    $$ \frac{d^2 x}{dt^2} = -k\cdot x - \gamma \cdot v. $$
+
+
+
+    Simulation works as normal, and internal parametrs' value can be changed with the same `Parent.nested.paramter` syntax:
     """)
     return
 
@@ -180,14 +186,6 @@ def _(DampedOscillator, Simulator, np):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Something with transform?
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
     ## Excercises
     **1)** Lets bring this a little closer to biology. Declare and simulate the classic LoktaVolterra predator-prey model:
 
@@ -196,7 +194,7 @@ def _():
     \frac{d\,\text{predator}}{dt} &= \text{predator} \cdot (\delta \cdot \text{prey} - \gamma).
     \end{align} $$
 
-    Use values $\alpha = 1,\ \beta = 0.1,\ \gamma = 1.5,\ \delta = 0.75$ and simulate it first with $\text{prey}(0) = 50$, $\text{predator}(0) = 10$ and then with $\text{prey}(0) = 10$, $\text{predator}(0) = 50$.
+    Use values $\alpha = 1,\ \beta = 0.1,\ \gamma = 1.5,\ \delta = 0.075$ and simulate it first with $\text{prey}(0) = 50$, $\text{predator}(0) = 10$ and then with $\text{prey}(0) = 10$, $\text{predator}(0) = 50$.
 
     **2)** Use the `Oscillator` class from above to declare coupled oscillators by instancing it twice in a larger `System` and adding the equations
 

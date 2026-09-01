@@ -40,7 +40,7 @@ def _():
 def _():
     import numpy as np
     import matplotlib.pyplot as plt
-    from simbio import System, RateLaw, Variable, initial
+    from simbio import Parameter, assign,System, RateLaw, Variable, initial
 
     class SynthesisRL(System):
         # Create species H, O, and H2O, each with intial value 1
@@ -48,10 +48,12 @@ def _():
         O: Variable = initial(default=1)
         H2O: Variable = initial(default=0)
 
-        # Reaction 2H + O -> H2O at rate 1
-        reaction = RateLaw(reactants=[2 * H, O], products=[H2O], rate_law=1)
+        k: Parameter = assign(default = 1)
+    
+        # Reaction 2H + O -> H2O at rate 3
+        reaction = RateLaw(reactants=[2 * H, O], products=[H2O], rate_law=k)
 
-    return SynthesisRL, System, Variable, initial, np
+    return Parameter, SynthesisRL, System, Variable, assign, initial, np
 
 
 @app.cell(hide_code=True)
@@ -60,11 +62,18 @@ def _():
     This represents the equations
     $$
     \begin{aligned}
-    \frac{dH}{dt} &= -2, \\
-    \frac{dO}{dt} &= -1, \\
-    \frac{dH2O}{dt} &= 1.
+    \frac{dH}{dt} &= -2\cdot k, \\
+    \frac{dO}{dt} &= -1\cdot k, \\
+    \frac{dH2O}{dt} &= +1\cdot k.
     \end{aligned}
     $$
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
     Simulation works the same as in Poincare.
     """)
     return
@@ -89,7 +98,7 @@ def _():
 
 
 @app.cell
-def _(Simulator, System, Variable, initial, np):
+def _(Parameter, Simulator, System, Variable, assign, initial, np):
     from simbio import MassAction
 
     class SynthesisMA(System):
@@ -97,26 +106,39 @@ def _(Simulator, System, Variable, initial, np):
         O: Variable = initial(default=1)
         H2O: Variable = initial(default=0)
 
+        k: Parameter = assign(default = 1)
+
         # Reaction 2H + O -> H2O at rate according to the law of mass action
-        reaction = MassAction(reactants=[2 * H, O], products=[H2O], rate=1) # rate instead of rate_law
+        reaction = MassAction(reactants=[2 * H, O], products=[H2O], rate=k) # rate instead of rate_law
 
     sim_2 = Simulator(SynthesisMA)
     result_2 = sim_2.solve(save_at = np.linspace(0,10,100))
     result_2.to_dataframe().plot()
-    return (MassAction,)
+    return MassAction, SynthesisMA
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    In this case the equations are
-    $$
-    \begin{aligned}
-    \frac{dH}{dt} &= -2H^2, \\
-    \frac{dO}{dt} &= -O, \\
-    \frac{dH_2O}{dt} &= H^2O.
-    \end{aligned}
-    $$
+    To get the equations for this model we can use the `latex_equations` function, which gives us Latex source for the models equations.
+    """)
+    return
+
+
+@app.cell
+def _(SynthesisMA):
+    from poincare.printing.latex import latex_equations
+
+    latex_eqs = latex_equations(SynthesisMA) # Get Latex equations source
+    mo.md(latex_eqs)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Pre-made reactions
+    Poincare contains a number of pre-made reactions which can be used as building blocks for systems. For the reaction above we can use the `Sythesis` reaction.
     """)
     return
 
@@ -124,8 +146,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Pre-made reacitons
-    Poincare contains a number of pre-made reactions which can be used as building blocks for systems. For the reaction above we can use the `Sythesis` reaction.
+    Pre made reactions use MassAction kinematics, so the result is the same as using MassAction. Simbio also has compound reactions; we can allow $H_2O$ to dissociate back into $H$ and $O$ by using `ReversibleSynthesis`
     """)
     return
 
@@ -149,17 +170,8 @@ def _(Simulator, System, Variable, initial, np):
     return
 
 
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    Pre made reactions use MassAction kinematics, so the result is the same as using MassAction. Simbio also has compound reactions; we can allow $H_2O$ to dissociate back into $H$ and $O$ by using `ReversibleSynthesis`
-    """)
-    return
-
-
 @app.cell
-def _(Simulator, System, Variable, initial, np):
-    from simbio import Parameter, assign
+def _(Parameter, Simulator, System, Variable, assign, initial, np):
     from simbio.reactions.compound import ReversibleSynthesis
 
     class SynthesisRev(System):
@@ -231,7 +243,9 @@ def _(MassAction, System, Variable, initial, u):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Units must be defiened consinstently: all our concentration have dimentionality of $\text{substance}/\text{volume}$, and our rates are set accodingly. If we define them incorrectly we get an error
+    Units must be defiened consinstently: all our concentration have dimentionality of $\text{substance}/\text{volume}$, and our rates are set accodingly. The rate units might require some explanation. Since MassAction will add $CH_4 \cdot O_2$ to all reactions, giving units of $(\text{mol}/\text{L})^3$. We multiply my its inverse to comensate, and then add the regular rate in $\text{mol}/\text{L}/\text{s}$.
+
+    If we define the units incorrectly we get an error
     """)
     return
 
@@ -254,7 +268,7 @@ def _(MassAction, System, Variable, initial, pint, u):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Here `O2` has unist of substance. This isn't inherently wrong, buy when we try to make the reaction the doesn't have the left hand side and right hand side of the equation don't have the same dimesnionality. They don't have to be the exact same unist as lons as they can be converted to each other though; note how in `Combustion` `CO2` has an initial condition in $\text{mmol} / \text{L}$. Simbio does have a way to handle mixing absolute amounts and concentrations via its [voulme interface](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/simbio/using_volume.py).
+    Here `O2` has units of substance. This isn't inherently wrong, buy when we try to make the reaction the doesn't have the left hand side and right hand side of the equation don't have the same dimesnionality. They don't have to be the exact same units as long as they can be converted to each other though; note how in `Combustion` `CO2` has an initial condition in $\text{mmol} / \text{L}$. Simbio does have a way to handle mixing absolute amounts and concentrations via its [voulme interface](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/simbio/using_volume.py).
 
     The same applies for simulation: working out the units in the reaction we are implicity giving our indpendent variable time dimensionality, so our simlation times must be in units of time.
     """)
@@ -266,7 +280,7 @@ def _(Combustion, Simulator, np, u):
     sim_5 = Simulator(Combustion)
     result_5 = sim_5.solve(save_at = np.linspace(0,10,100) * u.s)
     result_5
-    return (result_5,)
+    return result_5, sim_5
 
 
 @app.cell(hide_code=True)
@@ -293,17 +307,10 @@ def _():
 
 
 @app.cell
-def _(result_5, u):
-    result_5["CO2"] = result_5["CO2"].pint.to(u.mol/u.L)
-    result_5.pint.dequantify().to_dataframe().plot()
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ## Maybe something on volume?
-    """)
+def _(np, sim_5, u):
+    result_6 = sim_5.solve(save_at = np.linspace(0,10,100) * u.s)
+    result_6["CO2"] = result_6["CO2"].pint.to(u.mol/u.L)
+    result_6.pint.dequantify().to_dataframe().plot()
     return
 
 
@@ -312,7 +319,7 @@ def _():
     mo.md(r"""
     ## Excercises
 
-    **1)** Rates can depend on other variables and paremeters. Make a simple system with variables $A, B, C$ with reactions:
+    **1)** Rates can depend on other variables and parameters. Make a simple system with variables $A, B, C$ with reactions:
 
     $$ \begin{align} 2A &\rightarrow B \\
     C &\rightarrow \empty
