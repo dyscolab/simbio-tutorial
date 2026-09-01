@@ -15,6 +15,8 @@ ipywidgets = "*"
 marimo = ">=0.20.2"
 pyzmq = ">=27.1.0"
 seaborn = "*"
+python-libsbml = "*"
+pylatex = "*"
 
 # [feature.pypi.pypi-dependencies]
 # rebop = "*"
@@ -30,6 +32,7 @@ symbolite = { path = "../u2602/symbolite", editable = true }
 poincare = { path = "../u2602/poincare", editable = true }
 simbio = { path = "../u2602/simbio", editable = true }
 jablonski = { path = "../u2602/jablonski", editable = true }
+biomodels = "*"
 
 [tasks.open]
 args = [{ "arg" = "path", "default" = "" }]
