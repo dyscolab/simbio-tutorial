@@ -13,7 +13,7 @@ async with app.setup(hide_code=True):
         import micropip
 
         await micropip.install(
-            ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "simbio>=1.1.0", "matplotlib"], verbose = False
+            ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "simbio>=1.2.0", "matplotlib"], verbose = False
         )
 
 
@@ -49,7 +49,7 @@ def _():
         H2O: Variable = initial(default=0)
 
         k: Parameter = assign(default = 1)
-    
+
         # Reaction 2H + O -> H2O at rate 3
         reaction = RateLaw(reactants=[2 * H, O], products=[H2O], rate_law=k)
 
@@ -311,6 +311,14 @@ def _(np, sim_5, u):
     result_6 = sim_5.solve(save_at = np.linspace(0,10,100) * u.s)
     result_6["CO2"] = result_6["CO2"].pint.to(u.mol/u.L)
     result_6.pint.dequantify().to_dataframe().plot()
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    To learn more about SimBio see it's [full documentation](https://dyscolab.github.io/simbio/#documentation).
+    """)
     return
 
 

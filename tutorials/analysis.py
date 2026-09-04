@@ -13,7 +13,7 @@ async with app.setup(hide_code=True):
         import micropip
 
         await micropip.install(
-            ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "simbio>=1.1.0", "matplotlib"], verbose = False
+            ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "simbio>=1.2.0", "matplotlib"], verbose = False
         )
 
 
@@ -298,6 +298,14 @@ def _():
 def _(result_2):
     result_2.sel(quantity=["amplitude"]).to_dataarray().plot(marker=".")
     result_2.sel(quantity=["difference_rms"]).to_dataarray().plot(marker=".")
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    Poincare also includes a number of other analysis tools, sucha as searching for bistablity or fits. For mode information see the [full explainer on analysis](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/poincare/asymptotic_behaviour.py).
+    """)
     return
 
 

@@ -13,7 +13,7 @@ async with app.setup(hide_code=True):
         import micropip
 
         await micropip.install(
-            ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "poincare>=1.1.2", "matplotlib"], verbose = False
+            ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "poincare>=1.2.0", "matplotlib"], verbose = False
         )
 
 
@@ -180,6 +180,14 @@ def _(DampedOscillator, Simulator, np):
     sim_3 = Simulator(DampedOscillator).with_values({DampedOscillator.osc.k: 2})
     result_3 = sim_3.solve(save_at = np.linspace(0,20,200))
     result_3.to_dataframe().plot()
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    To learn more about Poincare see it's [full documentation](https://dyscolab.github.io/poincare/#documentation).
+    """)
     return
 
 
