@@ -314,9 +314,9 @@ def _():
     mo.md(rf"""
     # Excercises
 
-    **1)** The `Repressilator` class defines all variables externally and passes them to the subsystems. Since a instanced subclass createa their own variables and parameters if not passed externally this isn't necessary, although must be carefull to not create our variables twice. Make a more character efficient implementation of the repressilator by creating the proteins without external variables and then passing the internal variables created there to the mRNAs.
+    **1)** Run another parameter sweep for oscillatios but this time in $\alpha$ between 50 and 200. If we don't know in what range the periods and relaxaton times will be it is generally a reasonable first guess to assume it is monotonous in our parameter, so get an estimate by simulating at the maximum and minimum $\alpha$ and eyeballing a period and relaxation time.
 
-    **2)** Run another parameter sweep for oscillatios but this time in $\alpha$ between 50 and 200. If we don't know in what range the periods and relaxaton times will be it is generally a reasonable first guess to assume it is monotonous in our parameter, so get an estimate by simulating at the maximum and minimum $\alpha$ and eyeballing a period and relaxation time.
+    **2)** The `Repressilator` class defines all variables externally and passes them to the subsystems. Since a instanced subclass createa their own variables and parameters if not passed externally this isn't necessary, although must be carefull to not create our variables twice. Make a more character efficient implementation of the repressilator by creating the proteins without external variables and then passing the internal variables created there to the mRNAs.
     """)
     return
 

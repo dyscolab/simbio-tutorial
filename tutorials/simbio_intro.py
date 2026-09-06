@@ -317,7 +317,9 @@ def _(np, sim_5, u):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    To learn more about SimBio see it's [full documentation](https://dyscolab.github.io/simbio/#documentation).
+    Tomorrow we will have a second part where we will explore SimBio's analysis tools and learn about SimBio's "IO": how to import models and extract information from them. It will include a quick reintroduction to SimBio, so people can come even if they weren't in the first part.
+
+    To learn more about SimBio see it's [full documentation](https://dyscolab.github.io/simbio/#documentation), or for more information about Dyscolab generally go to it's [website](https://dyscolab.github.io/).
     """)
     return
 
