@@ -18,21 +18,22 @@ seaborn = "*"
 python-libsbml = "*"
 pylatex = "*"
 
-# [feature.pypi.pypi-dependencies]
-# rebop = "*"
-# symbolite = ">=1.1.0"
-# poincare = ">=1.1.2"
-# simbio = ">= 1.0.1"
-# jablonski = ">= 0.3.1"
-
-
 [pypi-dependencies]
 rebop = "*"
-symbolite = { path = "../u2602/symbolite", editable = true }
-poincare = { path = "../u2602/poincare", editable = true }
-simbio = { path = "../u2602/simbio", editable = true }
-jablonski = { path = "../u2602/jablonski", editable = true }
-biomodels = "*"
+symbolite = ">=1.1.1"
+poincare = ">=1.2.0"
+simbio = ">= 1.2.0"
+jablonski = ">= 0.3.1"
+biomodels = "*" 
+
+# Link to local versions
+# [pypi-dependencies]
+# rebop = "*"
+# biomodels = "*"
+# symbolite = { path = "../u2602/symbolite", editable = true }
+# poincare = { path = "../u2602/poincare", editable = true }
+# simbio = { path = "../u2602/simbio", editable = true }
+# jablonski = { path = "../u2602/jablonski", editable = true }
 
 [tasks.open]
 args = [{ "arg" = "path", "default" = "" }]
