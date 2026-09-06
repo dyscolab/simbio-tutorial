@@ -95,7 +95,7 @@ def _(result_1):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    As is usual with igher order systems require explicit declaration of derivatives. To declare a harmonic oscillator
+    As is usual, higher order systems require explicit declaration of derivatives. To declare a harmonic oscillator
     $$ \frac{d^2 x}{dt^2} = -k\cdot x $$
     we can write:
     """)
@@ -139,7 +139,7 @@ def _(Oscillator, Simulator, np):
 def _():
     mo.md(r"""
     ## Model composition
-    One of poincare's big features is that models are composable: smaller parts can be combined to make a lager model. We can use this to add damping to the oscillator without starting again from scratch.
+    One of poincare's big features is that models are composable: smaller parts can be combined to make a larger model. We can use this to add damping to the oscillator without starting again from scratch.
     """)
     return
 
@@ -148,13 +148,13 @@ def _():
 def _(Oscillator, Parameter, System, assign):
     class DampedOscillator(System):
         # Create Oscillator, adds all variables, parameters and equations
-        # v = 0 changes defualt initial condition for v
+        # v = 0 changes default initial condition for v
         osc = Oscillator(v = 0.5) 
 
         # Damping constant
         gamma: Parameter = assign(default = 0.5)
 
-        # Acces the oscillators variables with osc.(variable)
+        # Access the oscillator's variables with osc.(variable)
         eq = osc.v.derive() << -gamma *osc.v
 
     return (DampedOscillator,)
@@ -163,13 +163,13 @@ def _(Oscillator, Parameter, System, assign):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Instancing `Oscillator` adds all variables, parameters and equations to the outer system; passing `v = 0` when instancing changes the default initial conditon for `osc.v`. Inner variables or parameters can be accesed as attributes with osc.(variable) syntax. The new equation we declare will be added to the one we already declared inside of `Oscillator`, so the total equation woud be
+    Instancing `Oscillator` adds all variables, parameters and equations to the outer system; passing `v = 0` when instancing changes the default initial condition for `osc.v`. Inner variables or parameters can be accessed as attributes with osc.(variable) syntax. The new equation we declare will be added to the one we already declared inside of `Oscillator`, so the total equation would be
 
     $$ \frac{d^2 x}{dt^2} = -k\cdot x - \gamma \cdot v. $$
 
 
 
-    Simulation works as normal, and internal parametrs' value can be changed with the same `Parent.nested.paramter` syntax:
+    Simulation works as normal, and internal parameters' value can be changed with the same `Parent.nested.parameter` syntax:
     """)
     return
 
@@ -186,7 +186,7 @@ def _(DampedOscillator, Simulator, np):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    To learn more about Poincare see it's [full documentation](https://dyscolab.github.io/poincare/#documentation).
+    To learn more about Poincare see its [full documentation](https://dyscolab.github.io/poincare/#documentation).
     """)
     return
 
@@ -194,8 +194,8 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Excercises
-    **1)** Lets bring this a little closer to biology. Declare and simulate the classic LoktaVolterra predator-prey model:
+    ## Exercises
+    **1)** Let's bring this a little closer to biology. Declare and simulate the classic Lotka-Volterra predator-prey model:
 
     $$ \begin{align}
     \frac{d\,\text{prey}}{dt} &= \text{prey} \cdot (\alpha - \beta \cdot  \text{predator}),\\
@@ -211,7 +211,7 @@ def _():
     \frac{d^2x_2}{dt^2} &= k_c\cdot x_1.
     \end{align} $$
 
-    When creatieng it pass arguments to the instantced systmes to give them initial conditions $x_1(0) = 1, \ x_2(0) = 0$. Then simulate it with no coupling ($k_c = 0$), weak coupling ($k_c = 0.1$) and strong coupling ($k_c=1$).
+    When creating it, pass arguments to the instantiated systems to give them initial conditions $x_1(0) = 1, \ x_2(0) = 0$. Then simulate it with no coupling ($k_c = 0$), weak coupling ($k_c = 0.1$) and strong coupling ($k_c=1$).
     """)
     return
 

@@ -31,7 +31,7 @@ def _():
     mo.md(r"""
     ## Rate laws and mass action
 
-    SimBio's main differnece is that a system's dynamics are declared as reaction instead as equations. The simplest one is the `RateLaw`, which we can use to simulate a simple $2H + O \rightarrow H_2O$ synthesis.
+    SimBio's main difference is that a system's dynamics are declared as reactions instead of equations. The simplest one is the `RateLaw`, which we can use to simulate a simple $2H + O \rightarrow H_2O$ synthesis.
     """)
     return
 
@@ -40,7 +40,7 @@ def _():
 def _():
     import numpy as np
     import matplotlib.pyplot as plt
-    from simbio import Parameter, assign,System, RateLaw, Variable, initial
+    from simbio import Parameter, assign, System, RateLaw, Variable, initial
 
     class SynthesisRL(System):
         # Create species H, O, and H2O, each with intial value 1
@@ -50,7 +50,7 @@ def _():
 
         k: Parameter = assign(default = 1)
 
-        # Reaction 2H + O -> H2O at rate 3
+        # Reaction 2H + O -> H2O at rate k
         reaction = RateLaw(reactants=[2 * H, O], products=[H2O], rate_law=k)
 
     return Parameter, SynthesisRL, System, Variable, assign, initial, np
@@ -92,7 +92,7 @@ def _(SynthesisRL, np):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    To geta more realistic simulation we can use `MassAction`, which assigns rates according to the [law of mass action](https://en.wikipedia.org/wiki/Law_of_mass_action).
+    To get a more realistic simulation we can use `MassAction`, which assigns rates according to the [law of mass action](https://en.wikipedia.org/wiki/Law_of_mass_action).
     """)
     return
 
@@ -138,7 +138,7 @@ def _(SynthesisMA):
 def _():
     mo.md(r"""
     ## Pre-made reactions
-    Poincare contains a number of pre-made reactions which can be used as building blocks for systems. For the reaction above we can use the `Sythesis` reaction.
+    Poincare contains a number of pre-made reactions which can be used as building blocks for systems. For the reaction above we can use the `Synthesis` reaction.
     """)
     return
 
@@ -205,7 +205,7 @@ def _():
 def _():
     mo.md(r"""
     ## Units
-    SimBio (and also Poincare) allow for the use of units via [pint](https://drive.google.com/drive/u/0/my-drive). To use them we must first create a `UnitsRegistry`
+    SimBio (and also Poincare) allow for the use of units via [pint](https://pint.readthedocs.io/). To use them we must first create a `UnitsRegistry`
     """)
     return
 
@@ -243,7 +243,7 @@ def _(MassAction, System, Variable, initial, u):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Units must be defiened consinstently: all our concentration have dimentionality of $\text{substance}/\text{volume}$, and our rates are set accodingly. The rate units might require some explanation. Since MassAction will add $CH_4 \cdot O_2$ to all reactions, giving units of $(\text{mol}/\text{L})^3$. We multiply my its inverse to comensate, and then add the regular rate in $\text{mol}/\text{L}/\text{s}$.
+    Units must be defined consistently: all our concentrations have dimensionality of $\text{substance}/\text{volume}$, and our rates are set accordingly. The rate units might require some explanation. Since MassAction will add $CH_4 \cdot O_2^2$ to all reactions, giving units of $(\text{mol}/\text{L})^3$. We multiply by its inverse to compensate, and then add the regular rate in $\text{mol}/\text{L}/\text{s}$.
 
     If we define the units incorrectly we get an error
     """)
@@ -268,9 +268,9 @@ def _(MassAction, System, Variable, initial, pint, u):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Here `O2` has units of substance. This isn't inherently wrong, buy when we try to make the reaction the doesn't have the left hand side and right hand side of the equation don't have the same dimesnionality. They don't have to be the exact same units as long as they can be converted to each other though; note how in `Combustion` `CO2` has an initial condition in $\text{mmol} / \text{L}$. Simbio does have a way to handle mixing absolute amounts and concentrations via its [voulme interface](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/simbio/using_volume.py).
+    Here `O2` has units of substance. This isn't inherently wrong, but when we try to make the reaction, the left hand side and right hand side of the equation don't have the same dimensionality. They don't have to be the exact same units as long as they can be converted to each other though; note how in `Combustion` `CO2` has an initial condition in $\text{mmol} / \text{L}$. Simbio does have a way to handle mixing absolute amounts and concentrations via its [volume interface](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/simbio/using_volume.py).
 
-    The same applies for simulation: working out the units in the reaction we are implicity giving our indpendent variable time dimensionality, so our simlation times must be in units of time.
+    The same applies for simulation: working out the units in the reaction we are implicity giving our independent variable time dimensionality, so our simulation times must be in units of time.
     """)
     return
 
@@ -301,7 +301,7 @@ def _(result_5):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    All amounts are in the unit we set them in, so units `CO2`'s units are in $\text{mmol}/\text{L}$. This can make it kind of hard to make out the rest, so we can convetrt it to $\text{mol}/\text{L}$ first.
+    All amounts are in the unit we set them in, so `CO2`'s units are in $\text{mmol}/\text{L}$. This can make it kind of hard to make out the rest, so we can convert it to $\text{mol}/\text{L}$ first.
     """)
     return
 
@@ -319,7 +319,7 @@ def _():
     mo.md(r"""
     Tomorrow we will have a second part where we will explore SimBio's analysis tools and learn about SimBio's "IO": how to import models and extract information from them. It will include a quick reintroduction to SimBio, so people can come even if they weren't in the first part.
 
-    To learn more about SimBio see it's [full documentation](https://dyscolab.github.io/simbio/#documentation), or for more information about Dyscolab generally go to it's [website](https://dyscolab.github.io/).
+    To learn more about SimBio see its [full documentation](https://dyscolab.github.io/simbio/#documentation), or for more information about Dyscolab generally go to its [website](https://dyscolab.github.io/).
     """)
     return
 
@@ -327,7 +327,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Excercises
+    ## Exercises
 
     **1)** Rates can depend on other variables and parameters. Make a simple system with variables $A, B, C$ with reactions:
 
@@ -335,7 +335,7 @@ def _():
     C &\rightarrow \empty
     \end{align} $$
 
-    where the $2A \rightarrow B$ rate depends on a temperature parameter $T$ and the amount of catalizer $C$.
+    where the $2A \rightarrow B$ rate depends on a temperature parameter $T$ and the amount of catalyst $C$.
 
     **2)** Combustion needs a fuel source. Create a `System` `SustainedCombustion` which includes a `Combustion` subsystem and a constant source of `CH4` and `O2` using the `Creation` inbuilt reaction.
     """)
@@ -345,7 +345,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Pre-made ractions reference
+    ## Pre-made reactions reference
 
     Single reactions from `simbio.reactions.single`:
     - `Creation(A: Species, rate: Parameter)`: A substance `A` is created from nothing at a given rate, ∅ -> A.
