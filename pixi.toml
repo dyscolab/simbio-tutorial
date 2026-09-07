@@ -16,7 +16,6 @@ marimo = ">=0.20.2"
 pyzmq = ">=27.1.0"
 seaborn = "*"
 python-libsbml = "*"
-pylatex = "*"
 
 [pypi-dependencies]
 rebop = "*"
