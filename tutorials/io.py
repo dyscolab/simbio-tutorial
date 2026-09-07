@@ -14,7 +14,7 @@ async with app.setup(hide_code=True):
     if sys.executable == "/home/pyodide/this.program":
         import micropip
 
-        await micropip.install(
+        _ = await micropip.install(
             ["pint_pandas<=0.7", "typing_extensions>=4.15.0", "simbio>=1.2.0", "matplotlib"], verbose = False
         )
 
