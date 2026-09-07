@@ -1,0 +1,31 @@
+[project]
+name = "simbio-tutorial"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "biomodels>=0.3.2",
+    "ipykernel>=7.3.0",
+    "ipywidgets>=8.1.9",
+    "jablonski>=0.3.1",
+    "marimo>=0.20.2",
+    "matplotlib>=3.11.1",
+    "numpy>=2.4.2",
+    "poincare>=1.2.0",
+    "pylatex>=1.4.2",
+    "python-libsbml>=5.21.1",
+    "pyzmq>=27.1.0",
+    "rebop>=0.10.0",
+    "seaborn>=0.13.2",
+    "simbio>=1.2.0",
+    "symbolite>=1.1.1",
+]
+
+# marimo notebooks are not valid plain Python (top-level `async with app.setup()`),
+# so lint them with `marimo check` instead of ruff/ty.
+[tool.ruff]
+extend-exclude = ["tutorials"]
+
+[tool.ty.src]
+exclude = ["tutorials"]
