@@ -51,7 +51,7 @@ async with app.setup(hide_code=True):
 def _():
     mo.md(r"""
     # IO in SimBio
-    Being meant as a central source of truth for your models, SimBio contains a number of tools to input models from other sources (SBML) and translate it into ohter formats.
+    Being meant as a central source of truth for your models, SimBio contains a number of tools to input models from other sources (SBML) and translate them into other formats.
     """)
     return
 
@@ -60,7 +60,7 @@ def _():
 def _():
     mo.md(r"""
     ## Importing models from SBML
-    SimBio has the capability to directly import and use models in the [SBML](https://sbml.org/) (Systems Biology Markup Language) format, although it is still an experimantal feature with ongoing work, so importing some models might fail. Aside from opening local files we can also directly download and import import the large amount of existing models from [BioModels](http://biomodels.org/). They can be imported by their BioModels ID using the `load` function:
+    SimBio has the capability to directly import and use models in the [SBML](https://sbml.org/) (Systems Biology Markup Language) format, although it is still an experimental feature with ongoing work, so importing some models might fail. Aside from opening local files we can also directly download and import the large number of existing models from [BioModels](http://biomodels.org/). They can be imported by their BioModels ID using the `load` function:
     """)
     return
 
@@ -78,7 +78,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    The imported model works as any `System` in SimBio, so we can simulate it normally.
+    The imported model works like any `System` in SimBio, so we can simulate it normally.
     """)
     return
 
@@ -97,7 +97,7 @@ def _(model):
 def _():
     mo.md(r"""
     ## Model Reports
-    The other half of IO is output. We can use SimBio's `model_report` function to get latex source for a report with all of models equations, variables and parameters. This will also give us a better idea about the model we imported.
+    The other half of IO is output. We can use SimBio's `model_report` function to get LaTeX source for a report with all of the model's equations, variables and parameters. This will also give us a better idea about the model we imported.
     """)
     return
 
@@ -131,7 +131,7 @@ def _(model, model_report):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Here we use a function defined in the setup cell to complie it in the notebook, but after writing it with `model_report` you can use the latex complier and editor of your choice.
+    Here we use a function defined in the setup cell to compile it in the notebook, but after writing it with `model_report` you can use the Latex compiler and editor of your choice.
     """)
     return
 
@@ -139,8 +139,8 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Stohcastic simulation
-    As part of SimBio's goal of bieng a central place for all analysis the same models can be simulated stochastically with the [Gillespie algorithm](https://en.wikipedia.org/wiki/Gillespie_algorithm) via an interface with the [rebop](https://rebop.readthedocs.io/en/latest/) library. The interface is similar but we must use a `RebopSiumlator` instad of a regular one. We also pass `solve` an end time `upto_t` and a number of points `n_points` instead of a `save_at`.
+    ## Stochastic simulation
+    As part of SimBio's goal of being a central place for all analysis, the same models can be simulated stochastically with the [Gillespie algorithm](https://en.wikipedia.org/wiki/Gillespie_algorithm) via an interface with the [rebop](https://rebop.readthedocs.io/en/latest/) library. The interface is similar but we must use a `RebopSimulator` instead of a regular one. We also pass `solve` an end time `upto_t` and a number of points `n_points` instead of a `save_at`.
     """)
     return
 

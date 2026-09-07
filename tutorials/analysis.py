@@ -21,7 +21,7 @@ async with app.setup(hide_code=True):
 def _():
     mo.md(r"""
     # Larger systems and analysis tools
-    Poincare and SimBio contain a series of analysis, including parameter sweeps searching for steady states and oscillations. Before anything we need a more instersting example, so we will implement the the [repressilator](https://en.wikipedia.org/wiki/Repressilator).
+    Poincare and SimBio contain a series of analysis, including parameter sweeps searching for steady states and oscillations. Before anything we need a more interesting example, so we will implement the [repressilator](https://en.wikipedia.org/wiki/Repressilator).
     """)
     return
 
@@ -35,7 +35,7 @@ def _():
     \begin{aligned}
     \frac{dm_1}{dt} &=  -m_1 + \frac{\alpha}{1+p_3^n} + \alpha_0 \quad \frac{dp_1}{dt} &= - \beta (p_1-m_1)  \\
     \frac{dm_2}{dt} &=  -m_2 + \frac{\alpha}{1+p_1^n} + \alpha_0 \quad \frac{dp_2}{dt} &= - \beta (p_2-m_2) \\
-    \frac{dm_3}{dt} &=  -m_3 + \frac{\alpha}{1+p_2^n} + \alpha_0 \quad \frac{dp_2}{dt} &= - \beta (p_3-m_3)
+    \frac{dm_3}{dt} &=  -m_3 + \frac{\alpha}{1+p_2^n} + \alpha_0 \quad \frac{dp_3}{dt} &= - \beta (p_3-m_3)
     \end{aligned}
     """)
     return
@@ -44,10 +44,10 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Simbio is desinged with composability in mind, so we can break this down into parts and combine them later:
-    - Each $m_i$ is destroyed at a rate equal it itself.
-    - Each $m_i$ is sinthesysed at a rate $\frac{\alpha}{1+p_{i+1}^n} + \alpha_0$.
-    - Each $p_i$ is created at a rate equal $-\beta (p_i-m_i)$.
+    Simbio is designed with composability in mind, so we can break this down into parts and combine them later:
+    - Each $m_i$ is destroyed at a rate equal to itself.
+    - Each $m_i$ is synthesized at a rate $\frac{\alpha}{1+p_{i+1}^n} + \alpha_0$.
+    - Each $p_i$ is created at a rate equal to $-\beta (p_i-m_i)$.
 
     We can first implement the equation for each $m_i$
     """)
@@ -122,16 +122,16 @@ def _(Parameter, RateLaw, Simulator, System, Variable, assign, initial, np):
             reactants=[p, m], products=[2 * p, m], rate_law=-beta * (p - m)
         )
 
-    sim_1 = Simulator(Protein)  # Create parameter beta
+    sim_1 = Simulator(Protein)
     result_1 = sim_1.solve(save_at=np.linspace(0, 10, 1000))
-    result_1.to_dataframe().plot()  # create_rate: Parameter =  #
+    result_1.to_dataframe().plot()
     return (Protein,)
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Now we can combine everything into the single Represillator:
+    Now we can combine everything into the single Repressilator:
     """)
     return
 
@@ -153,7 +153,7 @@ def _(Parameter, Protein, System, Variable, assign, initial, mRNA):
         n: Parameter = assign(default=2)
         beta: Parameter = assign(default=8)
 
-        # Apply the creation and destruction laws to each species, in
+        # Apply the creation and destruction laws to each species
         react_1 = mRNA(m=m1, p=p3, alpha=alpha, alpha_0=alpha_0, n=n)
         react_2 = mRNA(m=m2, p=p1, alpha=alpha, alpha_0=alpha_0, n=n)
         react_3 = mRNA(m=m3, p=p2, alpha=alpha, alpha_0=alpha_0, n=n)
@@ -182,7 +182,7 @@ def _(Repressilator, Simulator, np):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Kind of dissapointgly we don't get oscillations since all initial conditions are equal. To see them we must change the intial conditions.
+    Kind of disappointingly we don't get oscillations since all initial conditions are equal. To see them we must change the initial conditions.
     """)
     return
 
@@ -207,8 +207,8 @@ def _(Repressilator, np, sim_2):
 def _():
     mo.md(r"""
     ## Steady state detection
-    We can use `poincare.SteadyState` to do a paramter sweep to find the steady state in the non-oscillating case: SimBio will automatically simulate the system until it finds a SteadyState and store the laste result.
-    As an example, we could sweep for different $\alpha$ values between 1 and 10
+    We can use `poincare.SteadyState` to do a parameter sweep to find the steady state in the non-oscillating case: SimBio will automatically simulate the system until it finds a SteadyState and store the last result.
+    As an example, we could sweep for different $\alpha$ values between 10 and 20
     """)
     return
 
@@ -249,7 +249,7 @@ def _(steady_sweep):
 def _():
     mo.md(r"""
     ## Oscillations detection
-    For ranges where it oscillates we can use `Oscillations` to do a parameter sweep to detect the periofd of oscilllations.  Aside from the parameter and values to sweep we must tell it what variable to look in oscilation for, an estimated upper bound on the systems releaxation time and the maximum and minimum period excpected.
+    For ranges where it oscillates we can use `Oscillations` to do a parameter sweep to detect the period of oscillations. Aside from the parameter and values to sweep we must tell it what variable to look for oscillation in, an estimated upper bound on the system's relaxation time and the maximum and minimum period expected.
     """)
     return
 
@@ -276,20 +276,20 @@ def _(Repressilator, np, sim_2):
         T_min=1,  # Minimum period expected
         T_max=20,  # Maximum period expected
         variables=Repressilator.m1,  # Variable to look at, can be an iterable with multiple variables
-        parameter=Repressilator.beta,
-        values=osc_sweep_values,
+        parameter=Repressilator.beta,  # Parameter to sweep
+        values=osc_sweep_values,  # Values taken on by parameter
     )
 
     result_2.sel(quantity="period").to_dataframe().plot(
         style="--."
-    )  # Parameter to sweep  # Values taken on by parameter
+    )
     return (result_2,)
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    We get a warning for a parameter value for which it couldn't be verified. The result also see includes the amplitude of the oscillation and the mean quadratic difference between periods to get another check on if the the system is actually oscillating.
+    We get a warning for a parameter value for which it couldn't be verified. The result also includes the amplitude of the oscillation and the mean quadratic difference between periods to get another check on if the system is actually oscillating.
     """)
     return
 
@@ -304,7 +304,7 @@ def _(result_2):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Poincare also includes a number of other analysis tools, sucha as searching for bistablity or fits. For mode information see the [full explainer on analysis](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/poincare/asymptotic_behaviour.py).
+    Poincare also includes a number of other analysis tools, such as searching for bistability or fits. For more information see the [full explainer on analysis](https://marimo.app/github.com/dyscolab/dyscolab-tutorials/blob/main/poincare/asymptotic_behaviour.py).
     """)
     return
 
@@ -314,9 +314,9 @@ def _():
     mo.md(rf"""
     # Excercises
 
-    **1)** Run another parameter sweep for oscillatios but this time in $\alpha$ between 50 and 200. If we don't know in what range the periods and relaxaton times will be it is generally a reasonable first guess to assume it is monotonous in our parameter, so get an estimate by simulating at the maximum and minimum $\alpha$ and eyeballing a period and relaxation time.
+    **1)** Run another parameter sweep for oscillations but this time in $\alpha$ between 50 and 200. If we don't know in what range the periods and relaxation times will be, it is generally a reasonable first guess to assume it is monotonous in our parameter, so get an estimate by simulating at the maximum and minimum $\alpha$ and eyeballing a period and relaxation time.
 
-    **2)** The `Repressilator` class defines all variables externally and passes them to the subsystems. Since a instanced subclass createa their own variables and parameters if not passed externally this isn't necessary, although must be carefull to not create our variables twice. Make a more character efficient implementation of the repressilator by creating the proteins without external variables and then passing the internal variables created there to the mRNAs.
+    **2)** The `Repressilator` class defines all variables externally and passes them to the subsystems. Since an instanced subclass creates its own variables and parameters if not passed externally this isn't necessary, although we must be careful not to create our variables twice. Make a more character-efficient implementation of the repressilator by creating the proteins without external variables and then passing the internal variables created there to the mRNAs.
     """)
     return
 

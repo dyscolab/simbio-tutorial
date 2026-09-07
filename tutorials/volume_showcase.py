@@ -21,7 +21,7 @@ async with app.setup(hide_code=True):
 def _():
     mo.md(r"""
     # Volume showcase
-    By popular demand we included a qucik showcase on how sytems with volume work on Simbio. The API is similar, but instead of defining a `System` we define a `Compartment` and instead of using a `Variable` we use a `Species`. The only diffenrence between a `Compartment` and a `System` is that a `Compartment` must have a single instance of a `Volume`.
+    By popular demand we included a quick showcase on how systems with volume work on Simbio. The API is similar, but instead of defining a `System` we define a `Compartment` and instead of using a `Variable` we use a `Species`. The only difference between a `Compartment` and a `System` is that a `Compartment` must have a single instance of a `Volume`.
     """)
     return
 
@@ -30,16 +30,16 @@ def _():
 def _():
     import numpy as np
     import pint
-    from simbio import Species,Volume, Parameter, Simulator, Compartment, MassAction, amount, concentration
+    from simbio import Species, Volume, Parameter, Simulator, Compartment, MassAction, amount, concentration
     u = pint.get_application_registry()
 
     class Combustion(Compartment):
         V = Volume(initial = 3 * u.L) # Create a Volume for the Compartment
     
         CH4: Species = concentration(default = 1 * u.mol/u.L) # Create CH4 as a concentration
-        O2: Species = amount(default = 1 * u.mol) #  Create O2 as absolute amount
-        CO2: Species = concentration(default = 0 * u.mol/u.L) #  Create CO2 as concentration
-        H2O: Species = concentration(default = 0 * u.mol/u.L) #  Create H20 as concentration
+        O2: Species = amount(default = 1 * u.mol) # Create O2 as absolute amount
+        CO2: Species = concentration(default = 0 * u.mol/u.L) # Create CO2 as concentration
+        H2O: Species = concentration(default = 0 * u.mol/u.L) # Create H2O as concentration
 
         combustion = MassAction(reactants = [CH4, 2 * O2], products = [CO2, 2* H2O], rate = 1 * u.mol/u.L/u.s * (u.mol/u.L)**-3)
 
@@ -49,7 +49,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    A `Species` is a variable that reacts to a `Compartment`'s `Volume`, and they can be created to represent either an amount or a concentration. This is reflected when the reactions are converted into equations.
+    A `Species` is a variable that relates to a `Compartment`'s `Volume`, and they can be created to represent either an amount or a concentration. This is reflected when the reactions are converted into equations.
     """)
     return
 
@@ -66,7 +66,7 @@ def _(Combustion):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Note how since `O2` is a concentration it is divided by volume in the equations and multiplied by it when it appears in the left hand side.
+    Note how since `O2` is an amount it is divided by volume in the equations and multiplied by it when it appears in the left hand side.
 
 
     Simulation works as normal.
